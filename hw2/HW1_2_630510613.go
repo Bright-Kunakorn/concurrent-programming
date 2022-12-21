@@ -2,25 +2,29 @@ package main
 
 import (
 	"fmt"
-	"sync"
 	"time"
 )
 
-var wg sync.WaitGroup
-
-func play(alice string, bob string) {
-	fmt.Println(alice + " : ping")
-	time.Sleep(time.Millisecond * 100)
-	fmt.Println(bob + " : pog")
-	time.Sleep(time.Millisecond * 100)
-	defer wg.Done()
-
+func PlayPing(ping <-chan string, pong chan<- string) {
+	for msg := range ping {
+		fmt.Println("bob:" + msg)
+		time.Sleep(time.Second)
+		pong <- "pong"
+	}
+}
+func PlayPong(ping chan<- string, pong <-chan string) {
+	for msg := range pong {
+		fmt.Println("alice: " + msg)
+		time.Sleep(time.Second)
+		ping <- "ping"
+	}
 }
 func main() {
-	for i := 0; i < 5; i++ {
-		wg.Add(1)
-		go play("alice", "bob")
-		wg.Wait()
+	alice := make(chan string)
+	bob := make(chan string)
+	go PlayPing(alice, bob)
+	go PlayPong(alice, bob)
+	alice <- "ping"
+	for {
 	}
-
 }
