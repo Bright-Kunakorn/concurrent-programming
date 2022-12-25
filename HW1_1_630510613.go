@@ -5,7 +5,6 @@ import (
 	"sync"
 	"time"
 )
-
 var wg sync.WaitGroup
 
 func say(s string) {
@@ -20,5 +19,4 @@ func main() {
 		go say("goroutine : world!")
 		wg.Wait()
 	}
-
 }
