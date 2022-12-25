@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sync"
 )
-
 var counter int
 var mu sync.Mutex
 
