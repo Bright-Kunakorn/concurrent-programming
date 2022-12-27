@@ -20,7 +20,7 @@ func say(s string) {
 }
 
 func main() {
-	// Run a loop 5 times
+	// Run a loop 5 times 
 	for i := 0; i < 5; i++ {
 		// Print a message
 		fmt.Println("main : hello")
