@@ -1,54 +1,62 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"math/rand"
+	"sync"
 	"time"
 )
 
-const (
-	numConsumers = 2
-	numProducers = 4
-	numMessages  = 6
-)
+var buffer = make([]byte, 0, 10)
+var all sync.WaitGroup
 
-type message struct {
-	str  string
-	wait chan bool
-}
-
-func producer(id int, ch chan<- *message) {
-	for i := 0; i < numMessages; i++ {
-		m := &message{
-			fmt.Sprintf("message %d from producer %d", i, id),
-			make(chan bool),
-		}
-		ch <- m
-		fmt.Println("Sent message", m.str)
-		time.Sleep(100 * time.Millisecond)
-	}
-}
-
-func consumer(id int, ch <-chan *message) {
-	for m := range ch {
-		fmt.Println("Received message", m.str, "in consumer", id)
-		time.Sleep(50 * time.Millisecond)
-		m.wait <- true
-	}
-}
+var bufferChan = make(chan bool, 1)
 
 func main() {
-	ch := make(chan *message)
+	rand.Seed(10)
+	all.Add(1)
+	go writer('a')
+	go writer('b')
+	go consumer()
+	all.Wait()
+}
 
-	for i := 0; i < numConsumers; i++ {
-		go consumer(i, ch)
+func writer(c byte) {
+	for i := 0; i < 5; i++ {
+		time.Sleep(time.Duration(rand.Int63n(1e9)))
+		bufferChan <- true
+		lb := len(buffer)
+		if lb < cap(buffer) {
+			buffer = buffer[:lb+1]
+			buffer[lb] = c
+			fmt.Printf("'%c' written to buffer.     buffer contents: %s\n",
+				c, string(buffer))
+		}
+		<-bufferChan
 	}
+}
 
-	for i := 0; i < numProducers; i++ {
-		go producer(i, ch)
+func consumer() {
+	a := []byte{'a'}
+	b := []byte{'b'}
+	for i := 0; i < 5; {
+		time.Sleep(time.Duration(rand.Int63n(1e9)))
+		bufferChan <- true
+		ai := bytes.Index(buffer, a)
+		bi := bytes.Index(buffer, b)
+		if ai >= 0 && bi >= 0 {
+			if ai > bi {
+				ai, bi = bi, ai
+			}
+			copy(buffer[bi:], buffer[bi+1:])
+			copy(buffer[ai:], buffer[ai+1:])
+			buffer = buffer[:len(buffer)-2]
+			fmt.Printf("pair removed from buffer.  buffer contents: %s\n",
+				string(buffer))
+			i++
+		}
+		<-bufferChan
 	}
-
-	// Wait for all the messages to be processed
-	for i := 0; i < numMessages*numProducers; i++ {
-		<-ch.Wait
-	}
+	all.Done()
 }
