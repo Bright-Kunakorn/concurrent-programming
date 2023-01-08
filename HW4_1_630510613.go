@@ -31,7 +31,6 @@ func agent(tobacco, paper, matches chan bool, wg *sync.WaitGroup) {
 		}
 	}
 }
-
 func smoker(id int, tobacco, paper, matches chan bool, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for {
