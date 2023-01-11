@@ -5,7 +5,6 @@ import (
 	"sync"
 	"time"
 )
-
 // Declare a WaitGroup variable
 var wg sync.WaitGroup
 
