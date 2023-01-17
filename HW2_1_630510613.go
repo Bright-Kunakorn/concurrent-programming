@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sync"
 )
-
 // counter is a shared variable that will be incremented by multiple goroutines.
 var counter int
 
