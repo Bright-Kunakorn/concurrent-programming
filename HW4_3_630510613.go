@@ -5,7 +5,6 @@ import (
 	"sync"
 	"time"
 )
-
 const (
 	numBees = 10
 	potSize = 10
