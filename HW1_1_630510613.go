@@ -16,7 +16,6 @@ func say(s string) {
 	// Decrement the WaitGroup counter by 1
 	wg.Done()
 }
-
 func main() {
 	// Run a loop 5 times 
 	for i := 0; i < 5; i++ {
