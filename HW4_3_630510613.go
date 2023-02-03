@@ -14,7 +14,6 @@ type HoneyPot struct {
 	honey int
 	mux   sync.Mutex
 }
-
 func (pot *HoneyPot) addHoney() {
 	pot.mux.Lock()
 	defer pot.mux.Unlock()
