@@ -9,7 +9,6 @@ const (
 	numBees = 10
 	potSize = 10
 )
-
 type HoneyPot struct {
 	honey int
 	mux   sync.Mutex
