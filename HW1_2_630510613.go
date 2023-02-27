@@ -16,6 +16,7 @@ func PlayPing(ping <-chan string, pong chan<- string) {
 		pong <- "pong"
 	}
 }
+
 // PlayPong simulates the "alice" player in a game of ping-pong.
 // It receives messages on the "pong" channel and sends responses on the "ping" channel.
 func PlayPong(ping chan<- string, pong <-chan string) {
