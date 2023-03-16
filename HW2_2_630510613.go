@@ -31,7 +31,6 @@ func main() {
 	// Print the final value of the counter variable.
 	fmt.Println("Final Sum:", counter)
 }
-
 // count increments the counter variable 10000 times.
 func count(i int, ch chan bool, wg *sync.WaitGroup) {
 	// Lock the mutex to synchronize access to the counter variable.
