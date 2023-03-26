@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 )
-
 var buffer = make([]byte, 0, 10)
 var all sync.WaitGroup
 
