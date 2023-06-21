@@ -7,6 +7,7 @@ import (
 // counter is a shared variable that will be incremented by multiple goroutines.
 var counter int
 
+
 // mu is a mutex that will be used to synchronize access to the counter variable.
 var mu sync.Mutex
 
