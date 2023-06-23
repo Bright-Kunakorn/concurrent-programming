@@ -5,12 +5,10 @@ import (
 	"sync"
 	"time"
 )
-
 const (
 	Smokers = 4
 	Agents  = 1
 )
-
 func agent(tobacco, paper, matches chan bool, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for {
