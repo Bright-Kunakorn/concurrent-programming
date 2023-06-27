@@ -18,6 +18,7 @@ func main() {
 	go writer('b')
 	go consumer()
 	all.Wait()
+	
 }
 
 func writer(c byte) {
