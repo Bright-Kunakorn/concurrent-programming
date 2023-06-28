@@ -3,6 +3,7 @@ import (
 	"fmt"
 	"time"
 )
+
 // PlayPing simulates the "bob" player in a game of ping-pong.
 // It receives messages on the "ping" channel and sends responses on the "pong" channel.
 func PlayPing(ping <-chan string, pong chan<- string) {
